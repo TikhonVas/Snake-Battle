@@ -77,14 +77,30 @@ for j in range(4):
         spins[j].append([0, 0, 0, 0, 0, 0, 0])
 switch_number = 1
 grabbed = [False] * 11
-spd = 9
 region = [[], [], [], []]
 spin = 0
+spd = 30
 snake_parts = [0]*11
 cell_coords = (73, 145)
 
 snakes_data = [
 [
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'st', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'b1', 'st', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['st', 'b1', 'b1', 'h1', 'nt', 'nt', 'nt'], ['nt', 'st', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'nt', 'nt'], ['st', 'b1', 'b1', 'b1', 'nt', 'nt', 'nt'], ['nt', 'st', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'st', 'nt', 'nt', 'nt', 'nt', 'nt'], ['st', 'b1', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'b1', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'b1', 'b1', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'st', 'nt', 'nt', 'nt', 'nt', 'nt'], ['st', 'b1', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'b1', 'nt', 'h1', 'nt', 'nt', 'nt'], ['nt', 'b1', 'b1', 'b1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'b1', 'b1', 't1', 'st', 'nt', 'nt'], ['nt', 'b1', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'b1', 'b1', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'b1', 't1', 'nt', 'st', 'nt', 'nt'], ['nt', 'b1', 'nt', 'h1', 'nt', 'nt', 'nt'], ['nt', 'b1', 'b1', 'b1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 'b1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'b1', 'b1', 'st'], ['nt', 'nt', 'nt', 'nt', 'nt', 'st', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'b1', 'b1', 'b1', 'st'], ['nt', 'nt', 'nt', 'nt', 'nt', 'st', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'st', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'st'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'h1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'st', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'st'], ['nt', 'nt', 'nt', 'h1', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'b1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 't1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'h1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 'nt', 't1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'b1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']]
 ],
 
 [
@@ -149,7 +165,7 @@ def reset_fight():
 
 
 def move(x, y, direction, i):
-    global dont_move, tried, lx, ly
+    global dont_move, lx, ly
 
     if not(1 <= x//30 and config[y//30][x//30-1] == 0) and not(x//30 < 19 and config[y//30][x//30+1] == 0) and not(1 <= y//30 and config[y//30-1][x//30] == 0) and not(y//30 < 19 and config[y//30+1][x//30] == 0):
         dont_move[i] = True
@@ -161,19 +177,15 @@ def move(x, y, direction, i):
     
         if 1 <= x//30 and config[y//30][x//30-1] == 0 and direction == 'left':
             lx -= size
-            tried = 0
             dont_move[i] = False
         elif x//30 < 19 and config[y//30][x//30+1] == 0 and direction == 'right':
             lx += size
-            tried = 0
             dont_move[i] = False
         elif 1 <= y//30 and config[y//30-1][x//30] == 0 and direction == 'up':
             ly -= size
-            tried = 0
             dont_move[i] = False
         elif y//30 < 19 and config[y//30+1][x//30] == 0 and direction == 'down':
             ly += size
-            tried = 0
             dont_move[i] = False
         else:
             move(x, y, random.choice(('left', 'right', 'up', 'down')), i)
@@ -537,8 +549,7 @@ def rotate_mas(mas):
 
 
 def print_snake(I):
-    global tried, equil
-    tried = 0
+    global equil
     equil = False
     remember(I)
     if not(dont_move[I]):
