@@ -63,7 +63,7 @@ images_path = os.path.join(resources_path, 'images')
 clock = pg.time.Clock()
 display = pg.display.set_mode((X, Y))
 keys = pg.key.get_pressed()
-pg.display.set_icon(pg.image.load(images_path + '\\big_0.png'))
+pg.display.set_icon(pg.image.load(os.path.join(images_path,'big_0.png')))
 
 Run = True
 Menu = True
@@ -120,13 +120,13 @@ right_switch_button = Button(725, 165, 30, 30, "sans italic.ttf", text = ">", fo
 switch_number_button = Button(697.5, 165, 20, 30, "sans.ttf", text = str(switch_number), font_size = 40)
 back_button = Button(660, 20, 105, 40, "sans italic.ttf", text = "Back", font_size = 50)
 save_button = Button(665, 80, 100, 40, "sans italic.ttf", text = "Save", font_size = 50)
-eraser_button = PictureButton(665, 210, 90, 60, pg.image.load(images_path + "\\eraser.png"))
-for i in range(1, 11): snake_parts[i] = PictureButton(-30 + i*(50+5), 25, 50, 50, pg.image.load(images_path + "\\big_" + str(i) + ".png"))
+eraser_button = PictureButton(665, 210, 90, 60, pg.image.load(os.path.join(images_path, "eraser.png")))
+for i in range(1, 11): snake_parts[i] = PictureButton(-30 + i*(50+5), 25, 50, 50, pg.image.load(os.path.join(images_path, "big_" + str(i) + ".png")))
 ##№ картинки
         
-surface = pg.image.load(images_path + '\\surface.png')
-menu = pg.transform.scale(pg.image.load(images_path + '\\menu.png'), (800, 600))
-settings = pg.image.load(images_path +'\\settings.png')
+surface = pg.image.load(os.path.join(images_path, 'surface.png'))
+menu = pg.transform.scale(pg.image.load(os.path.join(images_path, 'menu.png')), (800, 600))
+settings = pg.image.load(os.path.join(images_path, 'settings.png'))
 
 
 ### функции
@@ -228,7 +228,7 @@ def Quit_the_game():
 
 
 def head_rotation(i, head_name):
-    head = pg.transform.scale(pg.image.load(images_path + "\\" + head_name),(size, size))
+    head = pg.transform.scale(pg.image.load(os.path.join(images_path, head_name)),(size, size))
 
     if moves[i][0][1] < moves[i][1][1]:
         display.blit(head, (moves[i][0][0], moves[i][0][1]))
@@ -241,9 +241,9 @@ def head_rotation(i, head_name):
 
 
 def body_rotation(k, i, head_name, body_name, bodyr_name, bodyl_name, tail_name):
-    n = pg.transform.scale(pg.image.load(images_path + "\\" + body_name),(size, size))
-    l = pg.transform.scale(pg.image.load(images_path + "\\" + bodyl_name),(size, size))
-    r = pg.transform.scale(pg.image.load(images_path + "\\" + bodyr_name),(size, size))
+    n = pg.transform.scale(pg.image.load(os.path.join(images_path, body_name)),(size, size))
+    l = pg.transform.scale(pg.image.load(os.path.join(images_path, bodyl_name)),(size, size))
+    r = pg.transform.scale(pg.image.load(os.path.join(images_path, bodyr_name)),(size, size))
 
     if moves[i][k][0] > moves[i][k-1][0] and moves[i][k][1] < moves[i][k+1][1]:
         display.blit(l,(moves[i][k][0], moves[i][k][1]))
@@ -276,7 +276,7 @@ def body_rotation(k, i, head_name, body_name, bodyr_name, bodyl_name, tail_name)
 
 
 def tail_rotation(i, tail_name):
-    tail = pg.transform.scale(pg.image.load(images_path + "\\" + tail_name),(size, size))
+    tail = pg.transform.scale(pg.image.load(os.path.join(images_path, tail_name)),(size, size))
 
     if moves[i][6][1] > moves[i][5][1]:
         display.blit(tail,(moves[i][6][0], moves[i][6][1]))
@@ -357,9 +357,9 @@ def settings_buttons():
  
     if event.type == pg.MOUSEBUTTONDOWN:
         if eraser_button.is_over(mouse_pos) and eraser_button.width != 105:
-            eraser_button = PictureButton(657.5, 205, 105, 70, pg.image.load(images_path + "\\eraser.png"))
+            eraser_button = PictureButton(657.5, 205, 105, 70, pg.image.load(os.path.join(images_path, "eraser.png")))
         else:
-            eraser_button = PictureButton(665, 210, 90, 60, pg.image.load(images_path + "\\eraser.png"))
+            eraser_button = PictureButton(665, 210, 90, 60, pg.image.load(os.path.join(images_path, "eraser.png")))
                 
             if left_switch_button.is_over(mouse_pos):
                 if switch_number > 1:
@@ -414,7 +414,7 @@ def snake_parts_registration():
             Menu = True
                     
             for i in range(1, 11):
-                snake_parts[i].picture = pg.image.load(images_path + "\\big_" + str(i) + ".png")
+                snake_parts[i].picture = pg.image.load(os.path.join(images_path, "big_" + str(i) + ".png"))
 
         if eraser_button.width == 105:
             release_registration(-1)
@@ -450,7 +450,7 @@ def creating_new_comand(I):
         new_comand[I].append([-1, -1, -1, -1, -1, -1, -1])
 
 def blitting_of_released():
-    display.blit(pg.transform.scale(pg.image.load(images_path + "\\big_0.png"), (64, 64)), (cell_coords[0] + 3*64 + 3, cell_coords[1] + 3*64 + 3))
+    display.blit(pg.transform.scale(pg.image.load(os.path.join(images_path, "big_0.png")), (64, 64)), (cell_coords[0] + 3*64 + 3, cell_coords[1] + 3*64 + 3))
     
     for i in range(7):
         for j in range(7):
@@ -640,7 +640,7 @@ while Run:
         spd = 60
         
         display.blit(settings, (0, 0))
-        display.blit(pg.image.load(images_path + "\\cell.png"), (cell_coords[0], cell_coords[1]))
+        display.blit(pg.image.load(os.path.join(images_path, "cell.png")), (cell_coords[0], cell_coords[1]))
         
         draw_settings_buttons()
             
