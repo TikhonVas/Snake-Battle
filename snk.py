@@ -440,7 +440,7 @@ def release_registration(i):
         if i != -1:
             spins[switch_number-1][y][x] = pg.transform.scale(snake_parts[i].picture, (64, 64))
             spin = 0
-            snake_parts[i].picture = pg.image.load(images_path + '\\big_' + str(i) + '.png')
+            snake_parts[i].picture = pg.image.load(os.path.join(images_path, 'big_' + str(i) + '.png'))
 
 
 def creating_new_comand(I):
