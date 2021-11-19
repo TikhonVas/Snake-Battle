@@ -100,10 +100,10 @@ snakes_data = [
 [['nt', 'nt', 'nt', 'nt', 'nt', 'st', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'st'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'h1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
 [['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'st', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'st'], ['nt', 'nt', 'nt', 'h1', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'b1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
 [['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 't1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'h1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 'nt', 't1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'b1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']]
+[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 'nt', 't1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'b1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']]    
 ],
-
 [
+    
 ], [], []]
 
 
@@ -122,8 +122,8 @@ back_button = Button(660, 20, 105, 40, "sans italic.ttf", text = "Back", font_si
 save_button = Button(665, 80, 100, 40, "sans italic.ttf", text = "Save", font_size = 50)
 eraser_button = PictureButton(665, 210, 90, 60, pg.image.load(os.path.join(images_path, "eraser.png")))
 for i in range(1, 11): snake_parts[i] = PictureButton(-30 + i*(50+5), 25, 50, 50, pg.image.load(os.path.join(images_path, "big_" + str(i) + ".png")))
-##№ картинки
-        
+
+### картинки       
 surface = pg.image.load(os.path.join(images_path, 'surface.png'))
 menu = pg.transform.scale(pg.image.load(os.path.join(images_path, 'menu.png')), (800, 600))
 settings = pg.image.load(os.path.join(images_path, 'settings.png'))
@@ -132,12 +132,10 @@ settings = pg.image.load(os.path.join(images_path, 'settings.png'))
 ### функции
 
 def reset_fight():
-    global moves, config, cps, lx, ly, shadows, shadow_coords, dont_move, spd
+    global moves, config, cps, lx, ly, dont_move, spd
 
     moves = []
-    shadow_coords = []
     lx, ly = 0, 0
-    shadows = []
     dont_move = [False]*8
     config = []
     spd = 10
@@ -150,13 +148,6 @@ def reset_fight():
     for i in range(20):
         config.append([0]*20)
 
-    for i in range(4):
-        shadows.append([])
-        for j in range(7):
-            shadows[i].append([0, 0])
-
-    for i in range(4):
-        shadow_coords.append([0, 0])
 
     moves[0][0][0] = 570; moves[0][0][1] = 0
     moves[1][0][0] = 0; moves[1][0][1] = 570
@@ -190,19 +181,6 @@ def move(x, y, direction, i):
         else:
             move(x, y, random.choice(('left', 'right', 'up', 'down')), i)
 
-def restore():
-    global moves, lx, ly
-    for i in range(8):
-        if dont_move[i]:
-            for j in range(len(shadows[i])):
-                moves[i][j] = shadows[i][j]
-            lx = shadow_coords[i][0]
-            ly = shadow_coords[i][1]
-            for j in range(7):
-                if j == 0:
-                    config[moves[i][j][1]//30][moves[i][j][0]//30] = 2
-                else:
-                    config[moves[i][j][1]//30][moves[i][j][0]//30] = 1
 
 
 def changing_coords(i):
@@ -296,17 +274,6 @@ def prints(i, head_name, body_name, bodyr_name, bodyl_name, tail_name):
         body_rotation(k, i, head_name, body_name, bodyr_name, bodyl_name, tail_name)
 
     tail_rotation(i, tail_name)
-
-
-def remember(i):
-    global shadows, shadow_coords
-    for k in range(len(moves[i])):
-        for j in range(2):
-            shadows[i][k][j] = moves[i][k][j]
-    shadow_coords[i][0], shadow_coords[i][1] = lx, ly
-
-
-
 
 def menu_buttons():
     global Menu, Fight, Settings, spd
@@ -535,9 +502,7 @@ def analysis(I):
                     region[I][i][j] = 'ed'
 
 def rotate_mas(mas):
-    global rotated_mas
     rotated_mas = []
-
     for i in range(7):
         rotated_mas.append([])
         for j in range(7):
@@ -546,17 +511,17 @@ def rotate_mas(mas):
     for j in range(7):
         for i in range(6, -1, -1):
             rotated_mas[i][j] = mas[j][6-i]
+    return rotated_mas
 
 
 def print_snake(I):
     global equil
     equil = False
-    remember(I)
     if not(dont_move[I]):
         for comand in snakes_data[I]:
-            comparing(comand, region[I], I)
-            if equil:
-                break
+            comparing(comand, region[I], I, 0)
+            if equil: break
+            
         if not(equil):
             move(moves[I][0][0], moves[I][0][1], random.choice(['up', 'down', 'left', 'right']), I)
         changing_coords(I)
@@ -564,44 +529,22 @@ def print_snake(I):
     prints(I, 'head' + str(I+1) + '.png', 'body' + str(I+1) + '.png', 'body' + str(I+1) + '_right.png', 'body' + str(I+1) + '_left.png', 'tail' + str(I+1) + '.png')
 
 
-def comparing(comand, region, I):
+def comparing(comand, region, I, num_of_direct):
     global equil
     equil = True
-    shadow = []
-    for i in range(7):
-        shadow.append([])
-        for j in range(7):
-            shadow[i].append(comand[i][j])
+    
     for i in range(7):
         for j in range(7):
-            if shadow[i][j] != region[i][j] and shadow[i][j] != 'nt':
+            if comand[i][j] != region[i][j] and comand[i][j] != 'nt':
                 equil = False
                 break
     if equil:
-        move(moves[I][0][0], moves[I][0][1], 'up', i)
-    else:
-        for angle in range(3):
-            equil = True
-            rotate_mas(shadow)
-            for i in range(7):
-                for j in range(7):
-                    shadow[i][j] = rotated_mas[i][j]
-            for i in range(7):
-                if not(equil):
-                    break
-                for j in range(7):
-                    if shadow[i][j] != region[i][j] and shadow[i][j] != 'nt':
-                        equil = False
-                        break
-            if equil:
-                if angle == 0:
-                    move(moves[I][0][0], moves[I][0][1], 'left', I)
-                elif angle == 1:
-                    move(moves[I][0][0], moves[I][0][1], 'down', I)
-                elif angle == 2:
-                    move(moves[I][0][0], moves[I][0][1], 'right', I)
-                break
+        move(moves[I][0][0], moves[I][0][1], ['up', 'left', 'down', 'right'][num_of_direct], I)
+    elif num_of_direct != 3:
+        comand = rotate_mas(comand)
+        comparing(comand, region, I, num_of_direct + 1)
 
+                  
 def print_comand_and_region(I):
     for i in range(len(snakes_data[I])):
         for j in range(7):
@@ -623,8 +566,7 @@ while Run:
         display.blit(surface, (0, 0))
 
         fight_buttons()
-        restore()
-        for i in range(2):
+        for i in range(4):
             analysis(i)
 
             print_snake(i)
