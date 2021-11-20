@@ -1,7 +1,7 @@
 import pygame as pg
 import random
 import os, sys
-
+from comands import *
 pg.init()
 pg.font.init()
 
@@ -83,30 +83,11 @@ spd = 30
 snake_parts = [0]*11
 cell_coords = (73, 145)
 
-snakes_data = [
-[
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'st', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'b1', 'st', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['st', 'b1', 'b1', 'h1', 'nt', 'nt', 'nt'], ['nt', 'st', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'nt', 'nt'], ['st', 'b1', 'b1', 'b1', 'nt', 'nt', 'nt'], ['nt', 'st', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'st', 'nt', 'nt', 'nt', 'nt', 'nt'], ['st', 'b1', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'b1', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'b1', 'b1', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'st', 'nt', 'nt', 'nt', 'nt', 'nt'], ['st', 'b1', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'b1', 'nt', 'h1', 'nt', 'nt', 'nt'], ['nt', 'b1', 'b1', 'b1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'b1', 'b1', 't1', 'st', 'nt', 'nt'], ['nt', 'b1', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'b1', 'b1', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'b1', 't1', 'nt', 'st', 'nt', 'nt'], ['nt', 'b1', 'nt', 'h1', 'nt', 'nt', 'nt'], ['nt', 'b1', 'b1', 'b1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 'b1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'b1', 'b1', 'st'], ['nt', 'nt', 'nt', 'nt', 'nt', 'st', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'b1', 'b1', 'b1', 'st'], ['nt', 'nt', 'nt', 'nt', 'nt', 'st', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'st', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'st'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'h1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'st', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'st'], ['nt', 'nt', 'nt', 'h1', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'b1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 't1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'h1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']], 
-[['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'st', 'nt', 'nt', 'nt'], ['nt', 'nt', 'st', 'nt', 't1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'h1', 'nt', 'b1', 'nt'], ['nt', 'nt', 'nt', 'b1', 'b1', 'b1', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt'], ['nt', 'nt', 'nt', 'nt', 'nt', 'nt', 'nt']]    
-],
-[
-    
-], [], []]
-
-
+snakes_data = [[],[], [], []]
+snakes_data[0].extend(left1)
+snakes_data[1].extend(left1)
+snakes_data[2].extend(left1)
+snakes_data[3].extend(left1)
 
 ### кнопки
 menu_button = Button(635, 30, 130, 45, "sc bold.ttf", text="MENU", font_size = 60)
