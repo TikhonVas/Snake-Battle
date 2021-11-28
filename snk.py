@@ -1,9 +1,11 @@
 import pygame as pg
 import random
 import os, sys
-from comands import *
+from vars import *
 pg.init()
 pg.font.init()
+
+pg.display.set_icon(pg.image.load(os.path.join(images_path,'big_0.png')))
 
 class Button:
     def __init__(self, x, y, width, height, font, text_color=(0, 0, 0), color=(0, 0, 0), text="", font_size = 30):
@@ -51,44 +53,6 @@ class PictureButton:
             return True
         return False
 
-# переменные
-X, Y = 800, 600
-size = Y // 20
-
-current_path = os.path.dirname(__file__)
-resources_path = os.path.join(current_path, 'resources')
-font_path = os.path.join(resources_path, 'fonts')
-images_path = os.path.join(resources_path, 'images')
-
-clock = pg.time.Clock()
-display = pg.display.set_mode((X, Y))
-keys = pg.key.get_pressed()
-pg.display.set_icon(pg.image.load(os.path.join(images_path,'big_0.png')))
-
-Run = True
-Menu = True
-Fight = False
-Settings = False
-
-new_comand = [[], [], [], []]
-spins = [[], [], [], []]
-for j in range(4):
-    for i in range(7):
-        spins[j].append([0, 0, 0, 0, 0, 0, 0])
-switch_number = 1
-grabbed = [False] * 11
-region = [[], [], [], []]
-spin = 0
-spd = 30
-snake_parts = [0]*11
-cell_coords = (73, 145)
-
-snakes_data = [[],[], [], []]
-snakes_data[0].extend(left1)
-snakes_data[1].extend(left1)
-snakes_data[2].extend(left1)
-snakes_data[3].extend(left1)
-
 ### кнопки
 menu_button = Button(635, 30, 130, 45, "sc bold.ttf", text="MENU", font_size = 60)
 speed_button = Button(650, 100, 100, 30, "sc bold.ttf", text="Speed", font_size = 40)
@@ -102,8 +66,8 @@ switch_number_button = Button(697.5, 165, 20, 30, "sans.ttf", text = str(switch_
 back_button = Button(660, 20, 105, 40, "sans italic.ttf", text = "Back", font_size = 50)
 save_button = Button(665, 80, 100, 40, "sans italic.ttf", text = "Save", font_size = 50)
 eraser_button = PictureButton(665, 210, 90, 60, pg.image.load(os.path.join(images_path, "eraser.png")))
-for i in range(1, 11): snake_parts[i] = PictureButton(-30 + i*(50+5), 25, 50, 50, pg.image.load(os.path.join(images_path, "big_" + str(i) + ".png")))
-
+for i in range(1, 12): snake_parts[i] = PictureButton(-30 + i*(50+5), 25, 50, 50, pg.image.load(os.path.join(images_path, "big_" + str(i) + ".png")))
+face_button = PictureButton(cell_coords[0] + 3*65, cell_coords[1] + 3*65, 64, 64, pg.image.load(os.path.join(images_path, "big_0.png")))
 ### картинки       
 surface = pg.image.load(os.path.join(images_path, 'surface.png'))
 menu = pg.transform.scale(pg.image.load(os.path.join(images_path, 'menu.png')), (800, 600))
@@ -111,7 +75,6 @@ settings = pg.image.load(os.path.join(images_path, 'settings.png'))
 
 
 ### функции
-
 def reset_fight():
     global moves, config, cps, lx, ly, dont_move, spd
 
@@ -134,8 +97,7 @@ def reset_fight():
     moves[1][0][0] = 0; moves[1][0][1] = 570
     moves[2][0][0] = 0; moves[2][0][1] = 0
     moves[3][0][0] = 570; moves[3][0][1] = 570
-
-
+    
 def move(x, y, direction, i):
     global dont_move, lx, ly
 
@@ -161,8 +123,6 @@ def move(x, y, direction, i):
             dont_move[i] = False
         else:
             move(x, y, random.choice(('left', 'right', 'up', 'down')), i)
-
-
 
 def changing_coords(i):
     global moves, config
@@ -292,7 +252,7 @@ def fight_buttons():
         
     for event in pg.event.get():
         if event.type == pg.MOUSEBUTTONDOWN:
-            if up_button.is_over(mouse_pos) and spd <= 30:
+            if up_button.is_over(mouse_pos) and spd <= 100:
                 spd += 3
             elif down_button.is_over(mouse_pos) and spd >= 3:
                 spd -= 3
@@ -301,7 +261,7 @@ def fight_buttons():
                 Menu = True
 
 def settings_buttons():
-    global switch_number, Settings, Menu, eraser_button
+    global switch_number, Settings, Menu, eraser_button, face_button, face_spin
  
     if event.type == pg.MOUSEBUTTONDOWN:
         if eraser_button.is_over(mouse_pos) and eraser_button.width != 105:
@@ -320,8 +280,14 @@ def settings_buttons():
                 else:
                     switch_number = 1
             elif back_button.is_over(mouse_pos):
+                face_spin = 0
                 Settings = False
                 Menu = True
+                        
+                for i in range(1, 12):
+                    snake_parts[i].picture = pg.image.load(os.path.join(images_path, "big_" + str(i) + ".png"))
+            elif face_button.is_over(mouse_pos):
+                face_spin += 90
             elif save_button.is_over(mouse_pos):
                 saving()
 
@@ -329,16 +295,17 @@ def draw_settings_buttons():
     global switch_number_button
     
     switch_number_button.text = str(switch_number)
-    
-    left_switch_button.draw(), right_switch_button.draw(), switch_number_button.draw(), back_button.draw(), eraser_button.draw(), save_button.draw()
-    for i in range(1, 11):
+    face_button.picture = pg.transform.rotate(pg.image.load(os.path.join(images_path, "big_0.png")), -face_spin)
+
+    left_switch_button.draw(), right_switch_button.draw(), switch_number_button.draw(), back_button.draw(), eraser_button.draw(), save_button.draw(), face_button.draw()
+    for i in range(1, 12):
         snake_parts[i].draw()
 
     
-    if left_switch_button.is_over(mouse_pos) or right_switch_button.is_over(mouse_pos) or back_button.is_over(mouse_pos) or save_button.is_over(mouse_pos) or eraser_button.is_over(mouse_pos):
+    if left_switch_button.is_over(mouse_pos) or right_switch_button.is_over(mouse_pos) or back_button.is_over(mouse_pos) or save_button.is_over(mouse_pos) or eraser_button.is_over(mouse_pos) or face_button.is_over(mouse_pos):
         pg.mouse.set_cursor(pg.cursors.Cursor(pg.SYSTEM_CURSOR_HAND))
     else:
-        for i in range(1, 11):
+        for i in range(1, 12):
             if snake_parts[i].is_over(mouse_pos):
                 pg.mouse.set_cursor(pg.cursors.Cursor(pg.SYSTEM_CURSOR_HAND))
                 break
@@ -349,7 +316,7 @@ def snake_parts_registration():
     global snake_parts, spin, Settings, Menu, grabbed
     
     if event.type == pg.MOUSEWHEEL:
-        for i in range(1, 11):
+        for i in range(1, 12):
             if grabbed[i]:
                 snake_parts[i].picture = pg.transform.rotate(snake_parts[i].picture, 90*event.y)
                 spin += 90*event.y
@@ -357,17 +324,11 @@ def snake_parts_registration():
                         
     if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
 
-        if back_button.is_over(mouse_pos): # выход в меню
-            Settings = False
-            Menu = True
-                    
-            for i in range(1, 11):
-                snake_parts[i].picture = pg.image.load(os.path.join(images_path, "big_" + str(i) + ".png"))
 
         if eraser_button.width == 105:
             release_registration(-1)
-
-        for i in range(1, 11):
+            
+        for i in range(1, 12):
 
             if grabbed[i]:
                 release_registration(i)
@@ -398,8 +359,6 @@ def creating_new_comand(I):
         new_comand[I].append([-1, -1, -1, -1, -1, -1, -1])
 
 def blitting_of_released():
-    display.blit(pg.transform.scale(pg.image.load(os.path.join(images_path, "big_0.png")), (64, 64)), (cell_coords[0] + 3*64 + 3, cell_coords[1] + 3*64 + 3))
-    
     for i in range(7):
         for j in range(7):
             if new_comand[switch_number-1][i][j] != -1 and not(i == j == 3) and new_comand[switch_number-1][i][j] != 0:
@@ -408,32 +367,40 @@ def blitting_of_released():
 
 def saving():
     global snakes_data, new_comand
+    for i in range(face_spin // 90): #возвращает команду в положение, при котором голова направлена вверх
+        new_comand[switch_number-1] = rotate_mas(new_comand[switch_number-1])
+
     for i in range(7):
         for j in range(7):
-
-            if new_comand[switch_number-1][i][j] == 9:
-                new_comand[switch_number-1][i][j] = 't1'
-            elif 6 <= new_comand[switch_number-1][i][j] <= 8:
-                new_comand[switch_number-1][i][j] = 'b1'
-            elif i == j == 3:
-                new_comand[switch_number-1][i][j] = 'h1'
-                
-            elif new_comand[switch_number-1][i][j] == 4:
-                new_comand[switch_number-1][i][j] = 't2'
-            elif 1 <= new_comand[switch_number-1][i][j] <= 3:
-                new_comand[switch_number-1][i][j] = 'b2'
-            elif new_comand[switch_number-1][i][j] == 0:
-                new_comand[switch_number-1][i][j] = 'h2'
-                
+            
+            if new_comand[switch_number-1][i][j] == 11:
+                new_comand[switch_number-1][i][j] = 'fr'   
             elif new_comand[switch_number-1][i][j] == 10:
                 new_comand[switch_number-1][i][j] = 'st'
-
+                
+            elif new_comand[switch_number-1][i][j] == 9:
+                new_comand[switch_number-1][i][j] = 't2'
+            elif 6 <= new_comand[switch_number-1][i][j] <= 8:
+                new_comand[switch_number-1][i][j] = 'b2'
+            elif new_comand[switch_number-1][i][j] == 5:
+                new_comand[switch_number-1][i][j] = 'h2'
+            
+                
+            elif new_comand[switch_number-1][i][j] == 4:
+                new_comand[switch_number-1][i][j] = 't1'
+            elif 1 <= new_comand[switch_number-1][i][j] <= 3:
+                new_comand[switch_number-1][i][j] = 'b1'
+            elif new_comand[switch_number-1][i][j] == 0:
+                new_comand[switch_number-1][i][j] = 'h1'
+                
             elif new_comand[switch_number-1][i][j] == -1:
                 new_comand[switch_number-1][i][j] = 'nt'
-
+        
     snakes_data[switch_number-1].append(new_comand[switch_number-1])
     creating_new_comand(switch_number-1)
-    print(snakes_data[switch_number-1])
+    for i in range(7):
+        print(snakes_data[switch_number-1][-1][i])
+    print()
 
 
 def analysis(I):
@@ -456,26 +423,20 @@ def analysis(I):
                         region[I][i][j] = 'h1'
 
                 elif config[y+i][x+j] == 1:
-                    found = False
                     for k in range(4):
                         for l in range(1, 6):
+                            region[I][i][j] = 'b1'
                             if k != I and moves[k][l][0] == x2 and moves[k][l][1] == y2:
                                 region[I][i][j] = 'b2'
-                                found = True
                                 break
-                            elif not(found):
-                                region[I][i][j] = 'b1'
-
+                                
                 elif config[y+i][x+j] == 3:
-                    found = False
                     for k in range(4):
+                        region[I][i][j] = 't1'
                         if k != I and moves[k][6][0] == x2 and moves[k][6][1] == y2:
                             region[I][i][j] = 't2'
-                            found = True
                             break
-                        elif not(found):
-                            region[I][i][j] = 't1'
-
+                            
             else:
                 if ((y+i == -1 or y+i == 20) and (-1 <= x+j <= 20)) or ((x+j == -1 or x+j == 20) and (-1 <= y+i <= 20)):
                     region[I][i][j] = 'st'
@@ -483,12 +444,12 @@ def analysis(I):
                     region[I][i][j] = 'ed'
 
 def rotate_mas(mas):
-    rotated_mas = []
+    rotated_mas = [[], [], [], [], [], [], []]
+
     for i in range(7):
-        rotated_mas.append([])
         for j in range(7):
             rotated_mas[i].append(mas[i][j])
-
+        
     for j in range(7):
         for i in range(6, -1, -1):
             rotated_mas[i][j] = mas[j][6-i]
@@ -525,20 +486,6 @@ def comparing(comand, region, I, num_of_direct):
         comand = rotate_mas(comand)
         comparing(comand, region, I, num_of_direct + 1)
 
-                  
-def print_comand_and_region(I):
-    for i in range(len(snakes_data[I])):
-        for j in range(7):
-            print(snakes_data[I][i][j])
-        print()
-    print()
-    for i in range(7):
-        print(region[I][i])
-    print('>>>')
-
-
-
-
 while Run:
     clock.tick(spd)
     mouse_pos = pg.mouse.get_pos()
@@ -547,7 +494,7 @@ while Run:
         display.blit(surface, (0, 0))
 
         fight_buttons()
-        for i in range(4):
+        for i in range(1):
             analysis(i)
 
             print_snake(i)
