@@ -66,7 +66,7 @@ switch_number_button = Button(697.5, 165, 20, 30, "sans.ttf", text = str(switch_
 back_button = Button(660, 20, 105, 40, "sans italic.ttf", text = "Back", font_size = 50)
 save_button = Button(665, 80, 100, 40, "sans italic.ttf", text = "Save", font_size = 50)
 eraser_button = PictureButton(665, 210, 90, 60, pg.image.load(os.path.join(images_path, "eraser.png")))
-for i in range(1, 12): snake_parts[i] = PictureButton(-30 + i*(50+5), 25, 50, 50, pg.image.load(os.path.join(images_path, "big_" + str(i) + ".png")))
+for i in range(1, 12): snake_parts[i] = PictureButton(-30 + i*(50+5), 25, 50, 50, pg.image.load(os.path.join(images_path, "big_" + str(i)[0] + ".png")))
 face_button = PictureButton(cell_coords[0] + 3*65, cell_coords[1] + 3*65, 64, 64, pg.image.load(os.path.join(images_path, "big_0.png")))
 
 ### картинки       
