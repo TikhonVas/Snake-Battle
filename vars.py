@@ -4,7 +4,8 @@ import os, sys
 import comands
 from comands import *
 # переменные
-X, Y = 800, 600
+X, Y = 1440, 1080
+k = X / 800
 size = Y // 20
 
 current_path = os.path.dirname(__file__)

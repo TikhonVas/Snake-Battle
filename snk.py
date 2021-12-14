@@ -9,11 +9,11 @@ pg.display.set_icon(pg.image.load(os.path.join(images_path,'big_0.png')))
 
 class Button:
     def __init__(self, x, y, width, height, font, text_color=(0, 0, 0), color=(0, 0, 0), text="", font_size = 30):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.font = pg.font.Font(os.path.join(font_path, font), font_size)
+        self.x = int(k * x)
+        self.y = int(k * y)
+        self.width = int(k * width)
+        self.height = int(k * height)
+        self.font = pg.font.Font(os.path.join(font_path, font), int(k*font_size))
         self.color = color
         self.text = text
         self.text_color = text_color
@@ -39,10 +39,10 @@ class Button:
 
 class PictureButton:
     def __init__(self, x, y, width, height, picture):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+        self.x = int(k * x)
+        self.y = int(k * y)
+        self.width = int(k * width)
+        self.height = int(k * height)
         self.picture = picture
         
     def draw(self):
@@ -66,13 +66,13 @@ switch_number_button = Button(697.5, 165, 20, 30, "sans.ttf", text = str(switch_
 back_button = Button(660, 20, 105, 40, "sans italic.ttf", text = "Back", font_size = 50)
 save_button = Button(665, 80, 100, 40, "sans italic.ttf", text = "Save", font_size = 50)
 eraser_button = PictureButton(665, 210, 90, 60, pg.image.load(os.path.join(images_path, "eraser.png")))
-for i in range(1, 12): snake_parts[i] = PictureButton(-30 + i*(50+5), 25, 50, 50, pg.image.load(os.path.join(images_path, "big_" + str(i) + ".png")))
+for i in range(1, 12): snake_parts[i] = PictureButton(-4*size/5 + i*(50+5), 25, 50, 50, pg.image.load(os.path.join(images_path, "big_" + str(i) + ".png")))
 face_button = PictureButton(cell_coords[0] + 3*65, cell_coords[1] + 3*65, 64, 64, pg.image.load(os.path.join(images_path, "big_0.png")))
 
 ### картинки       
-surface = pg.image.load(os.path.join(images_path, 'surface.png'))
-menu = pg.transform.scale(pg.image.load(os.path.join(images_path, 'menu.png')), (800, 600))
-settings = pg.image.load(os.path.join(images_path, 'settings.png'))
+surface = pg.transform.scale(pg.image.load(os.path.join(images_path, 'surface.png')), (X, Y))
+menu = pg.transform.scale(pg.image.load(os.path.join(images_path, 'menu.png')), (X, Y))
+settings = pg.transform.scale(pg.image.load(os.path.join(images_path, 'settings.png')), (X, Y))
 
 
 ### функции
@@ -94,33 +94,33 @@ def reset_fight():
         config.append([0]*20)
 
 
-    moves[0][0][0] = 570; moves[0][0][1] = 0
-    moves[1][0][0] = 0; moves[1][0][1] = 570
+    moves[0][0][0] = size * 19; moves[0][0][1] = 0
+    moves[1][0][0] = 0; moves[1][0][1] = size * 19
     moves[2][0][0] = 0; moves[2][0][1] = 0
-    moves[3][0][0] = 570; moves[3][0][1] = 570
+    moves[3][0][0] = size * 19; moves[3][0][1] = size * 19
     
 def move(x, y, direction, i):
     global dont_move
 
-    if not(1 <= x//30 and config[y//30][x//30-1] in (0, 3)) and not(
-           x//30 < 19 and config[y//30][x//30+1] in (0, 3)) and not(
-           1 <= y//30 and config[y//30-1][x//30] in (0, 3)) and not(
-           y//30 < 19 and config[y//30+1][x//30] in (0, 3)):
+    if not(1 <= x//size and config[y//size][x//size-1] in (0, 3)) and not(
+           x//size < 19 and config[y//size][x//size+1] in (0, 3)) and not(
+           1 <= y//size and config[y//size-1][x//size] in (0, 3)) and not(
+           y//size < 19 and config[y//size+1][x//size] in (0, 3)):
         dont_move[i] = True
             
     else:
         dont_move[i] = False
     
-        if 1 <= x//30 and config[y//30][x//30-1] in (0, 3) and direction == 'left':
+        if 1 <= x//size and config[y//size][x//size-1] in (0, 3) and direction == 'left':
             x -= size
             changing_coords(x, y, i)
-        elif x//30 < 19 and config[y//30][x//30+1] in (0, 3) and direction == 'right':
+        elif x//size < 19 and config[y//size][x//size+1] in (0, 3) and direction == 'right':
             x += size
             changing_coords(x, y, i)
-        elif 1 <= y//30 and config[y//30-1][x//30] in (0, 3) and direction == 'up':
+        elif 1 <= y//size and config[y//size-1][x//size] in (0, 3) and direction == 'up':
             y -= size
             changing_coords(x, y, i)
-        elif y//30 < 19 and config[y//30+1][x//30] in (0, 3) and direction == 'down':
+        elif y//size < 19 and config[y//size+1][x//size] in (0, 3) and direction == 'down':
             y += size
             changing_coords(x, y, i)
         else:
@@ -128,16 +128,16 @@ def move(x, y, direction, i):
 
 def changing_coords(x, y, i ):
     global moves, config
-    config[moves[i][-1][1] // 30][moves[i][-1][0] // 30] = 0
+    config[moves[i][-1][1] // size][moves[i][-1][0] // size] = 0
 
     for j in range(len(moves[i])-1, 0, -1):
         moves[i][j][0] = moves[i][j-1][0]
         moves[i][j][1] = moves[i][j-1][1]
-        config[moves[i][j][1] // 30][moves[i][j][0] // 30] = 1
+        config[moves[i][j][1] // size][moves[i][j][0] // size] = 1
 
     moves[i][0][0], moves[i][0][1] = x, y
-    config[y//30][x//30] = 2
-    config[moves[i][-1][1] // 30][moves[i][-1][0] // 30] = 3
+    config[y//size][x//size] = 2
+    config[moves[i][-1][1] // size][moves[i][-1][0] // size] = 3
 
 
 def Quit_the_game():
@@ -330,29 +330,29 @@ def snake_parts_registration():
     if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
 
 
-        if eraser_button.width == 105:
+        if eraser_button.width == int(k*105):
             release_registration(-1)
             
         for i in range(1, 12):
 
             if grabbed[i]:
                 release_registration(i)
-                snake_parts[i] = PictureButton(-30 + i*(50+5), 25, 50, 50, snake_parts[i].picture)
+                snake_parts[i] = PictureButton(-4*size/5 + i*(50+5), 25, 50, 50, snake_parts[i].picture)
                 grabbed[i] = False
                 break
             if not grabbed[i]:
                 if snake_parts[i].is_over(mouse_pos):
-                    snake_parts[i] = PictureButton(-34 + i*(50+5), 21, 58, 58, snake_parts[i].picture)
+                    snake_parts[i] = PictureButton(-4*(size+4)/5 + i*(50+5), 21, 58, 58, snake_parts[i].picture)
                     grabbed[i] = True
 
 
 def release_registration(i):
     global new_comand, spins, spin, snakes_parts
-    x, y = int((mouse_pos[0]-cell_coords[0])//64), int((mouse_pos[1]-cell_coords[1])//64)
+    x, y = int((mouse_pos[0]-k*cell_coords[0])//(k*64)), int((mouse_pos[1]-k*cell_coords[1])//(k*64))
     if 0 <= x <= 6 and 0 <= y <= 6:
         new_comand[switch_number-1][y][x] = i
         if i != -1:
-            spins[switch_number-1][y][x] = pg.transform.scale(snake_parts[i].picture, (64, 64))
+            spins[switch_number-1][y][x] = pg.transform.scale(snake_parts[i].picture, (int(k*64), int(k*64)))
             spin = 0
             snake_parts[i].picture = pg.image.load(os.path.join(images_path, 'big_' + str(i) + '.png'))
 
@@ -367,7 +367,7 @@ def blitting_of_released():
     for i in range(7):
         for j in range(7):
             if new_comand[switch_number-1][i][j] != -1 and not(i == j == 3) and new_comand[switch_number-1][i][j] != 0:
-                display.blit(spins[switch_number-1][i][j], (cell_coords[0] + j*64 + j, cell_coords[1] + i*64 + i))
+                display.blit(spins[switch_number-1][i][j], (k*cell_coords[0] + j*64.4*k + j, k*cell_coords[1] + i*64.4*k + i))
 
 
 def saving():
@@ -410,7 +410,7 @@ def saving():
 
 def analysis(I):
     global region, config
-    x, y = int(moves[I][0][0]//30) - 3, int(moves[I][0][1]//30) - 3
+    x, y = int(moves[I][0][0]//size) - 3, int(moves[I][0][1]//size) - 3
     region[I] = []
 
     for i in range(7):
@@ -419,7 +419,7 @@ def analysis(I):
     for i in range(7):
         for j in range(7):
             if 0 <= y+i <= 19 and 0 <= x+j <= 19:
-                x2, y2 = 30*(x+j), 30*(y+i)
+                x2, y2 = size*(x+j), size*(y+i)
                 if config[y+i][x+j] == 2:
                     if not(i == 3 and j == 3):
                         region[I][i][j] = 'h2'
@@ -523,7 +523,7 @@ while Run:
         spd = 60
         
         display.blit(settings, (0, 0))
-        display.blit(pg.image.load(os.path.join(images_path, "cell.png")), (cell_coords[0], cell_coords[1]))
+        display.blit(pg.transform.scale(pg.image.load(os.path.join(images_path, "cell.png")), (int(k*454), int(k*454))), (k*cell_coords[0], k*cell_coords[1]))
         
         draw_settings_buttons()
             
