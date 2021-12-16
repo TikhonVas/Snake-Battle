@@ -81,23 +81,22 @@ def reset_fight():
 
     moves = []
     dont_move = [False]*4
-    snakes_len = [6, 6, 6, 6]
     config = []
-    spd = 10
+    spd = 5
     
-    for i in range(4):
+    for i in range(amount):
         moves.append([])
-        for j in range(7):
-            moves[i].append([0, -100])
+        for j in range(5):
+            moves[i].append([-100, -100])
 
     for i in range(20):
         config.append([0]*20)
 
 
     moves[0][0][0] = size * 19; moves[0][0][1] = 0
-    moves[1][0][0] = 0; moves[1][0][1] = size * 19
-    moves[2][0][0] = 0; moves[2][0][1] = 0
-    moves[3][0][0] = size * 19; moves[3][0][1] = size * 19
+    if amount > 1:moves[1][0][0] = 0; moves[1][0][1] = size * 19
+    if amount > 2:moves[2][0][0] = 0; moves[2][0][1] = 0
+    if amount > 3:moves[3][0][0] = size * 19; moves[3][0][1] = size * 19
     
 def move(x, y, direction, i):
     global dont_move
@@ -238,7 +237,7 @@ def menu_buttons():
                 
             elif settings_button.is_over(mouse_pos):
                 Settings = True
-                for i in range(4):
+                for i in range(amount):
                     creating_new_comand(i)
                 Menu = False
 
@@ -256,9 +255,9 @@ def fight_buttons():
     for event in pg.event.get():
         if event.type == pg.MOUSEBUTTONDOWN:
             if up_button.is_over(mouse_pos) and spd <= 100:
-                spd += 3
+                spd += 5
             elif down_button.is_over(mouse_pos) and spd >= 3:
-                spd -= 3
+                spd -= 5
             elif menu_button.is_over(mouse_pos):
                 Fight = False
                 Menu = True
@@ -427,7 +426,7 @@ def analysis(I):
                         region[I][i][j] = 'h1'
 
                 elif config[y+i][x+j] == 1:
-                    for k in range(4):
+                    for k in range(amount):
                         for l in range(1, len(moves[k])-1):
                             region[I][i][j] = 'b1'
                             if k != I and moves[k][l][0] == x2 and moves[k][l][1] == y2:
@@ -435,7 +434,7 @@ def analysis(I):
                                 break
                                 
                 elif config[y+i][x+j] == 3:
-                    for k in range(4):
+                    for k in range(amount):
                         region[I][i][j] = 't1'
                         if k != I and moves[k][-1][0] == x2 and moves[k][-1][1] == y2:
                             region[I][i][j] = 't2'
@@ -491,12 +490,15 @@ def comparing(comand, region, I, num_of_direct):
 
 
 def check_bite():
-    global moves
-    for i in range(4):
-        for j in range(4):
-            if moves[i][0][0] == moves[j][-1][0] and moves[i][0][1] == moves[j][-1][1] and i != j:
-                moves[i].append([-100, -100])
-                moves[j] = moves[j][:-1]
+    global moves, config, spd 
+    for i in range(amount):
+        for j in range(amount):
+            if i != j:
+                if moves[i][0][0] == moves[j][-1][0] and moves[i][0][1] == moves[j][-1][1]:                  
+                    if len(moves[j]) > 2:
+                        moves[i].append([moves[i][-1][0], moves[i][-1][1]])
+                        moves[j] = moves[j][:-1]
+                        config[moves[j][-1][1]//size][moves[j][-1][0]//size] = 3
                 
 while Run:
     clock.tick(spd)
@@ -506,10 +508,13 @@ while Run:
         display.blit(surface, (0, 0))
 
         fight_buttons()
-        for i in range(4):
+        for i in range(amount):
             if len(moves[i]) > 2:
-                analysis(i)
-                print_snake(i)
+                if not len(moves[i-1]) + len(moves[i-2]) + len(moves[i-3]) == 6:
+                    analysis(i)
+                    print_snake(i)
+            else:
+                config[moves[i][-1][1]//size][moves[i][-1][0]//size] = 4
             prints(i, 'head' + str(i+1) + '.png', 'body' + str(i+1) + '.png', 'body' + str(i+1) + '_right.png', 'body' + str(i+1) + '_left.png', 'tail' + str(i+1) + '.png')
 
     if Menu:
