@@ -53,6 +53,10 @@ class PictureButton:
             return True
         return False
 
+
+
+
+
 ### кнопки
 menu_button = Button(635, 30, 130, 45, "sc bold.ttf", text="MENU", font_size = 60)
 speed_button = Button(650, 100, 100, 30, "sc bold.ttf", text="Speed", font_size = 40)
@@ -82,30 +86,34 @@ def reset_fight():
     moves = []
     dont_move = [False]*4
     config = []
-    spd = 1
+    spd = 5
     
     for i in range(amount):
         moves.append([])
-        for j in range(8):
-            moves[i].append([-100, -100])
+    for j in range(12):
+        moves[0].append([9*size, 0])
+        moves[1].append([-0, 9*size])
+        moves[2].append([9*size, 18*size])
+        moves[3].append([18*size, 9*size])
+        
+    for i in range(19):
+        config.append([0]*19)
 
-    for i in range(20):
-        config.append([0]*20)
 
-
-    moves[0][0][0] = size*10; moves[0][0][1] = -size
-    if amount > 1:moves[1][0][0] = -size; moves[1][0][1] = size*10
-    if amount > 2:moves[2][0][0] = size*10; moves[2][0][1] = size*20
-    if amount > 3:moves[3][0][0] = size * 20; moves[3][0][1] = size * 10
+    moves[0][0][0] = size * 9; moves[0][0][1] = 0
+    if amount > 1:moves[1][0][0] = 0; moves[1][0][1] = size * 9
+    if amount > 2:moves[2][0][0] = size * 9; moves[2][0][1] = size * 18
+    if amount > 3:moves[3][0][0] = size * 18; moves[3][0][1] = size * 9
     
 def move(x, y, direction, i):
     global dont_move
 
     if not(1 <= x//size and config[y//size][x//size-1] in (0, 3)) and not(
-           x//size < 19 and config[y//size][x//size+1] in (0, 3)) and not(
+           x//size < 18 and config[y//size][x//size+1] in (0, 3)) and not(
            1 <= y//size and config[y//size-1][x//size] in (0, 3)) and not(
-           y//size < 19 and config[y//size+1][x//size] in (0, 3)):
+           y//size < 18 and config[y//size+1][x//size] in (0, 3)):
         dont_move[i] = True
+        
             
     else:
         dont_move[i] = False
@@ -113,13 +121,13 @@ def move(x, y, direction, i):
         if 1 <= x//size and config[y//size][x//size-1] in (0, 3) and direction == 'left':
             x -= size
             changing_coords(x, y, i)
-        elif x//size < 19 and config[y//size][x//size+1] in (0, 3) and direction == 'right':
+        elif x//size < 18 and config[y//size][x//size+1] in (0, 3) and direction == 'right':
             x += size
             changing_coords(x, y, i)
         elif 1 <= y//size and config[y//size-1][x//size] in (0, 3) and direction == 'up':
             y -= size
             changing_coords(x, y, i)
-        elif y//size < 19 and config[y//size+1][x//size] in (0, 3) and direction == 'down':
+        elif y//size < 18 and config[y//size+1][x//size] in (0, 3) and direction == 'down':
             y += size
             changing_coords(x, y, i)
         else:
@@ -127,16 +135,14 @@ def move(x, y, direction, i):
 
 def changing_coords(x, y, i ):
     global moves, config
-    config[moves[i][-1][1] // size][moves[i][-1][0] // size] = 0
-
-    for j in range(len(moves[i])-1, 0, -1):
-        moves[i][j][0] = moves[i][j-1][0]
-        moves[i][j][1] = moves[i][j-1][1]
-        config[moves[i][j][1] // size][moves[i][j][0] // size] = 1
-
-    moves[i][0][0], moves[i][0][1] = x, y
+    
+    moves[i] = [[x, y]] + moves[i][:-1]
+    
+    config[moves[i][-1][1] // size][moves[i][-1][0] // size] = 0    
+    config[moves[i][1][1] // size][moves[i][1][0] // size] = 1
     config[y//size][x//size] = 2
-    config[moves[i][-1][1] // size][moves[i][-1][0] // size] = 3
+    if moves[i][-1] != moves[i][-2]:
+        config[moves[i][-1][1] // size][moves[i][-1][0] // size] = 3
 
 
 def Quit_the_game():
@@ -150,13 +156,13 @@ def Quit_the_game():
 def head_rotation(i, head_name):
     head = pg.transform.scale(pg.image.load(os.path.join(images_path, head_name)),(size, size))
 
-    if moves[i][0][1] < moves[i][1][1]:
+    if moves[i][0][1] < moves[i][1][1] or moves[i][0] == moves[i][1] == [9*size, 18*size]:
         display.blit(head, (moves[i][0][0], moves[i][0][1]))
-    if moves[i][0][1] > moves[i][1][1]:
+    if moves[i][0][1] > moves[i][1][1] or moves[i][0] == moves[i][1] == [9*size, 0]:
         display.blit(pg.transform.rotate(head, 180), (moves[i][0][0], moves[i][0][1]))
-    if moves[i][0][0] > moves[i][1][0]:
+    if moves[i][0][0] > moves[i][1][0] or moves[i][0] == moves[i][1] == [0, 9*size]:
         display.blit(pg.transform.rotate(head, 270), (moves[i][0][0], moves[i][0][1]))
-    if moves[i][0][0] < moves[i][1][0]:
+    if moves[i][0][0] < moves[i][1][0] or moves[i][0] == moves[i][1] == [18*size, 9*size]:
         display.blit(pg.transform.rotate(head, 90), (moves[i][0][0], moves[i][0][1]))
 
 
@@ -214,7 +220,8 @@ def prints(i, head_name, body_name, bodyr_name, bodyl_name, tail_name):
 
     if len(moves[i]) > 2:
         for k in range(1, len(moves[i]) - 1):
-            body_rotation(k, i, head_name, body_name, bodyr_name, bodyl_name, tail_name)
+            if not moves[i][k-1] == moves[i][k]:
+                body_rotation(k, i, head_name, body_name, bodyr_name, bodyl_name, tail_name)
 
     tail_rotation(i, tail_name)
 
@@ -417,7 +424,7 @@ def analysis(I):
 
     for i in range(7):
         for j in range(7):
-            if 0 <= y+i <= 19 and 0 <= x+j <= 19:
+            if 0 <= y+i <= 18 and 0 <= x+j <= 18:
                 x2, y2 = size*(x+j), size*(y+i)
                 if config[y+i][x+j] == 2:
                     if not(i == 3 and j == 3):
@@ -441,7 +448,7 @@ def analysis(I):
                             break
                             
             else:
-                if ((y+i == -1 or y+i == 20) and (-1 <= x+j <= 20)) or ((x+j == -1 or x+j == 20) and (-1 <= y+i <= 20)):
+                if ((y+i == -1 or y+i == 19) and (-1 <= x+j <= 19)) or ((x+j == -1 or x+j == 19) and (-1 <= y+i <= 19)):
                     region[I][i][j] = 'st'
                 else:
                     region[I][i][j] = 'ed'
@@ -468,16 +475,7 @@ def print_snake(I):
             if equil: break
             
     if not(equil):
-        if I == 0 and moves[I][0] == [size*10, -size]:
-            move(moves[I][0][0], moves[I][0][1], 'down', I)
-        elif I == 1 and moves[I][0] == [-size, size*10]:
-            move(moves[I][0][0], moves[I][0][1], 'right', I)
-        elif I == 2 and moves[I][0] == [size*10, size*20]:
-            move(moves[I][0][0], moves[I][0][1], 'up', I)
-        elif I == 3 and moves[I][0] == [size * 20, size*10]:
-            move(moves[I][0][0], moves[I][0][1], 'left', I)
-        else:
-            move(moves[I][0][0], moves[I][0][1], random.choice(['up', 'down', 'left', 'right']), I)
+        move(moves[I][0][0], moves[I][0][1], random.choice(['up', 'down', 'left', 'right']), I)
 
     check_bite()
 
@@ -503,29 +501,31 @@ def check_bite():
     for i in range(amount):
         for j in range(amount):
             if i != j:
-                if moves[i][0][0] == moves[j][-1][0] and moves[i][0][1] == moves[j][-1][1]:                  
+                if moves[i][0][0] == moves[j][-1][0] and moves[i][0][1] == moves[j][-1][1]:
+                    moves[i].append([moves[i][-1][0], moves[i][-1][1]])
+                    moves[j] = moves[j][:-1]
                     if len(moves[j]) > 2:
-                        moves[i].append([moves[i][-1][0], moves[i][-1][1]])
-                        moves[j] = moves[j][:-1]
                         config[moves[j][-1][1]//size][moves[j][-1][0]//size] = 3
                 
 while Run:
     clock.tick(spd)
     mouse_pos = pg.mouse.get_pos()
-    if Fight:
-
+    if Fight: 
         display.blit(surface, (0, 0))
 
         fight_buttons()
         for i in range(amount):
-            if len(moves[i]) > 2:
-                if not len(moves[i-1]) + len(moves[i-2]) + len(moves[i-3]) == 6:
-                    analysis(i)
-                    print_snake(i)
-            else:
-                config[moves[i][-1][1]//size][moves[i][-1][0]//size] = 4
             prints(i, 'head' + str(i+1) + '.png', 'body' + str(i+1) + '.png', 'body' + str(i+1) + '_right.png', 'body' + str(i+1) + '_left.png', 'tail' + str(i+1) + '.png')
-
+            
+            if len(moves[i]) > 2:
+##                if not dont_move[0] + dont_move[1] + dont_move[2] + dont_move[3] == 3:
+                analysis(i)
+                print_snake(i)
+                    
+            else:
+                dont_move[i] = True
+                config[moves[i][-1][1]//size][moves[i][-1][0]//size] = 4
+    
     if Menu:
         spd = 60
 

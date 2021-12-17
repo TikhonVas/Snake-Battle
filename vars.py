@@ -4,9 +4,9 @@ import os, sys
 import comands
 from comands import *
 # переменные
-X, Y = 1200, 900
+X, Y = int(1.5*770), int(1.5*570)
 k = X / 800
-size = Y // 20
+size = Y // 19
 amount = 4
 current_path = os.path.dirname(__file__)
 resources_path = os.path.join(current_path, 'resources')
@@ -51,7 +51,7 @@ snakes_data = [[], [], [], []]
 ##snakes_data[2].extend(basic)
 ##snakes_data[3].extend(basic)
 
-snakes_data[0].extend(circle)
+##snakes_data[0].extend(circle)
 ##snakes_data[2].extend(left1)
 ##snakes_data[3].extend(left2)
 
