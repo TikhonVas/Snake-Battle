@@ -82,21 +82,21 @@ def reset_fight():
     moves = []
     dont_move = [False]*4
     config = []
-    spd = 5
+    spd = 1
     
     for i in range(amount):
         moves.append([])
-        for j in range(5):
+        for j in range(8):
             moves[i].append([-100, -100])
 
     for i in range(20):
         config.append([0]*20)
 
 
-    moves[0][0][0] = size * 19; moves[0][0][1] = 0
-    if amount > 1:moves[1][0][0] = 0; moves[1][0][1] = size * 19
-    if amount > 2:moves[2][0][0] = 0; moves[2][0][1] = 0
-    if amount > 3:moves[3][0][0] = size * 19; moves[3][0][1] = size * 19
+    moves[0][0][0] = size*10; moves[0][0][1] = -size
+    if amount > 1:moves[1][0][0] = -size; moves[1][0][1] = size*10
+    if amount > 2:moves[2][0][0] = size*10; moves[2][0][1] = size*20
+    if amount > 3:moves[3][0][0] = size * 20; moves[3][0][1] = size * 10
     
 def move(x, y, direction, i):
     global dont_move
@@ -468,7 +468,16 @@ def print_snake(I):
             if equil: break
             
     if not(equil):
-        move(moves[I][0][0], moves[I][0][1], random.choice(['up', 'down', 'left', 'right']), I)
+        if I == 0 and moves[I][0] == [size*10, -size]:
+            move(moves[I][0][0], moves[I][0][1], 'down', I)
+        elif I == 1 and moves[I][0] == [-size, size*10]:
+            move(moves[I][0][0], moves[I][0][1], 'right', I)
+        elif I == 2 and moves[I][0] == [size*10, size*20]:
+            move(moves[I][0][0], moves[I][0][1], 'up', I)
+        elif I == 3 and moves[I][0] == [size * 20, size*10]:
+            move(moves[I][0][0], moves[I][0][1], 'left', I)
+        else:
+            move(moves[I][0][0], moves[I][0][1], random.choice(['up', 'down', 'left', 'right']), I)
 
     check_bite()
 
