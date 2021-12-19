@@ -86,24 +86,19 @@ def reset_fight():
     moves = []
     dont_move = [False]*4
     config = []
-    spd = 5
+    spd = spd0
     
     for i in range(amount):
         moves.append([])
-    for j in range(8):
+    for j in range(5): #<- длина не меньше 4
         moves[0].append([9*size, 0])
-        moves[1].append([-0, 9*size])
-        moves[2].append([9*size, 18*size])
-        moves[3].append([18*size, 9*size])
+        if amount > 1:moves[1].append([0, 9*size])
+        if amount > 2:moves[2].append([9*size, 18*size])
+        if amount > 3:moves[3].append([18*size, 9*size])
         
     for i in range(19):
         config.append([0]*19)
 
-
-    moves[0][0][0] = size * 9; moves[0][0][1] = 0
-    if amount > 1:moves[1][0][0] = 0; moves[1][0][1] = size * 9
-    if amount > 2:moves[2][0][0] = size * 9; moves[2][0][1] = size * 18
-    if amount > 3:moves[3][0][0] = size * 18; moves[3][0][1] = size * 9
     
 def move(x, y, direction, i):
     global dont_move
@@ -113,6 +108,7 @@ def move(x, y, direction, i):
            1 <= y//size and config[y//size-1][x//size] in (0, 3) and [x, y - size] != moves[i][-2]) and not(
            y//size < 18 and config[y//size+1][x//size] in (0, 3) and [x, y + size] != moves[i][-2]):
         dont_move[i] = True
+
         
             
     else:
@@ -158,13 +154,13 @@ def head_rotation(i, head_name):
     head = pg.transform.scale(pg.image.load(os.path.join(images_path, head_name)),(size, size))
 
     if moves[i][0][1] < moves[i][1][1] or moves[i][0] == moves[i][1] == [9*size, 18*size]:
-        display.blit(head, (moves[i][0][0], moves[i][0][1]))
+        display.blit(head, moves[i][0])
     if moves[i][0][1] > moves[i][1][1] or moves[i][0] == moves[i][1] == [9*size, 0]:
-        display.blit(pg.transform.rotate(head, 180), (moves[i][0][0], moves[i][0][1]))
+        display.blit(pg.transform.rotate(head, 180), moves[i][0])
     if moves[i][0][0] > moves[i][1][0] or moves[i][0] == moves[i][1] == [0, 9*size]:
-        display.blit(pg.transform.rotate(head, 270), (moves[i][0][0], moves[i][0][1]))
+        display.blit(pg.transform.rotate(head, 270), moves[i][0])
     if moves[i][0][0] < moves[i][1][0] or moves[i][0] == moves[i][1] == [18*size, 9*size]:
-        display.blit(pg.transform.rotate(head, 90), (moves[i][0][0], moves[i][0][1]))
+        display.blit(pg.transform.rotate(head, 90), moves[i][0])
 
 
 def body_rotation(k, i, head_name, body_name, bodyr_name, bodyl_name, tail_name):
@@ -173,33 +169,33 @@ def body_rotation(k, i, head_name, body_name, bodyr_name, bodyl_name, tail_name)
     r = pg.transform.scale(pg.image.load(os.path.join(images_path, bodyr_name)),(size, size))
 
     if moves[i][k][0] > moves[i][k-1][0] and moves[i][k][1] < moves[i][k+1][1]:
-        display.blit(l,(moves[i][k][0], moves[i][k][1]))
+        display.blit(l, moves[i][k])
     elif moves[i][k][0] < moves[i][k-1][0] and moves[i][k][1] < moves[i][k+1][1]:
-        display.blit(r,(moves[i][k][0], moves[i][k][1]))
+        display.blit(r, moves[i][k])
     elif moves[i][k][0] > moves[i][k-1][0] and moves[i][k][1] > moves[i][k+1][1]:
-        display.blit(pg.transform.rotate(r, 180),(moves[i][k][0], moves[i][k][1]))
+        display.blit(pg.transform.rotate(r, 180), moves[i][k])
     elif moves[i][k][0] < moves[i][k-1][0] and moves[i][k][1] > moves[i][k+1][1]:
-        display.blit(pg.transform.rotate(l, 180),(moves[i][k][0], moves[i][k][1]))
+        display.blit(pg.transform.rotate(l, 180), moves[i][k])
 
     elif moves[i][k][1] > moves[i][k-1][1] and moves[i][k][0] < moves[i][k+1][0]:
-        display.blit(pg.transform.rotate(r, 90),(moves[i][k][0], moves[i][k][1]))
+        display.blit(pg.transform.rotate(r, 90), moves[i][k])
     elif moves[i][k][1] < moves[i][k-1][1] and moves[i][k][0] < moves[i][k+1][0]:
-        display.blit(pg.transform.rotate(l, 90),(moves[i][k][0], moves[i][k][1]))
+        display.blit(pg.transform.rotate(l, 90), moves[i][k])
     elif moves[i][k][1] > moves[i][k-1][1] and moves[i][k][0] > moves[i][k+1][0]:
-        display.blit(pg.transform.rotate(l, 270),(moves[i][k][0], moves[i][k][1]))
+        display.blit(pg.transform.rotate(l, 270), moves[i][k])
     elif moves[i][k][1] < moves[i][k-1][1] and moves[i][k][0] > moves[i][k+1][0]:
-        display.blit(pg.transform.rotate(r, 270),(moves[i][k][0], moves[i][k][1]))
+        display.blit(pg.transform.rotate(r, 270), moves[i][k])
     else:
         if moves[i][k][0] == moves[i][k-1][0]:
             if moves[i][k][1] > moves[i][k-1][1]:
-                display.blit(n,(moves[i][k][0], moves[i][k][1]))
+                display.blit(n, moves[i][k])
             else:
-                display.blit(pg.transform.rotate(n, 180),(moves[i][k][0], moves[i][k][1]))
+                display.blit(pg.transform.rotate(n, 180), moves[i][k])
         else:
             if moves[i][k][0] > moves[i][k-1][0]:
-                display.blit(pg.transform.rotate(n, 90),(moves[i][k][0], moves[i][k][1]))
+                display.blit(pg.transform.rotate(n, 90), moves[i][k])
             else:
-                display.blit(pg.transform.rotate(n, 270),(moves[i][k][0], moves[i][k][1]))
+                display.blit(pg.transform.rotate(n, 270), moves[i][k])
 
 
 def tail_rotation(i, tail_name):
@@ -472,6 +468,7 @@ def rotate_mas(mas):
 def print_snake(I):
     global equil
     equil = False
+    check_bite()
     if not dont_move[i]:
         for comand in snakes_data[I]:
             comparing(comand, region[I], I, 0)
@@ -480,7 +477,7 @@ def print_snake(I):
     if not(equil):
         move(moves[I][0][0], moves[I][0][1], random.choice(['up', 'down', 'left', 'right']), I)
 
-    check_bite()
+    
 
 
 def comparing(comand, region, I, num_of_direct):
@@ -494,13 +491,9 @@ def comparing(comand, region, I, num_of_direct):
                 break
     if equil:
         move(moves[I][0][0], moves[I][0][1], ['up', 'left', 'down', 'right'][num_of_direct], I)
-        for el in region:
-            print(el)
-        print()
                 
     elif num_of_direct != 3:
-        comand = rotate_mas(comand)
-        comparing(comand, region, I, num_of_direct + 1)
+        comparing(rotate_mas(comand), region, I, num_of_direct + 1)
 
 
 def check_bite():
@@ -515,7 +508,8 @@ def check_bite():
                 
                 if len(moves[j]) > 3:
                     config[moves[j][-2][1]//size][moves[j][-2][0]//size] = 3
-                
+
+
 while Run:
     clock.tick(spd)
     mouse_pos = pg.mouse.get_pos()
@@ -526,14 +520,14 @@ while Run:
         for i in range(amount):
             prints(i, 'head' + str(i+1) + '.png', 'body' + str(i+1) + '.png', 'body' + str(i+1) + '_right.png', 'body' + str(i+1) + '_left.png', 'tail' + str(i+1) + '.png')
             
-            if len(moves[i]) == 8 or i == 0 :
+            if len(moves[i]) > 3:
 ##                if not dont_move[0] + dont_move[1] + dont_move[2] + dont_move[3] == 3:
                 analysis(i)
                 print_snake(i)
                     
             else:
                 dont_move[i] = True
-                config[moves[i][-1][1]//size][moves[i][-1][0]//size] = 4
+                config[moves[i][-2][1]//size][moves[i][-2][0]//size] = 4
     
     if Menu:
         spd = 60
