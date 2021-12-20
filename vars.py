@@ -31,8 +31,9 @@ switch_number = 1
 grabbed = [False] * 12
 region = [[], [], [], []]
 amount = 4 #не более 4
+length = 9 #<- длина не меньше 4
 spin = 0
-spd0 = 20
+spd0 = 5
 spd = spd0
 snake_parts = [0]*12
 cell_coords = (73, 145)
@@ -48,12 +49,12 @@ snakes_data[0].extend(tail)
 ##snakes_data[3].extend(tail)
 
 ##snakes_data[0].extend(basic)
-##snakes_data[1].extend(basic)
-##snakes_data[2].extend(basic)
-##snakes_data[3].extend(basic)
+snakes_data[1].extend(basic)
+snakes_data[2].extend(basic)
+snakes_data[3].extend(basic)
 
 
-snakes_data[0].extend(left3)
+##snakes_data[0].extend(left3)
 ##snakes_data[3].extend(left2)
 
 

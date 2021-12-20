@@ -90,7 +90,7 @@ def reset_fight():
     
     for i in range(amount):
         moves.append([])
-    for j in range(5): #<- длина не меньше 4
+    for j in range(length):
         moves[0].append([9*size, 0])
         if amount > 1:moves[1].append([0, 9*size])
         if amount > 2:moves[2].append([9*size, 18*size])
@@ -138,8 +138,7 @@ def changing_coords(x, y, i ):
   
     config[moves[i][1][1] // size][moves[i][1][0] // size] = 1
     config[y//size][x//size] = 2
-    if moves[i][-2] != moves[i][-3]:
-        config[moves[i][-2][1] // size][moves[i][-2][0] // size] = 3
+    config[moves[i][-2][1] // size][moves[i][-2][0] // size] = 3
 
 
 def Quit_the_game():
